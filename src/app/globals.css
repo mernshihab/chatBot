@@ -2,21 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-
 * {
   box-sizing: border-box;
 }
-
-
 
 .container {
   max-width: 90% !important;
   margin: auto;
 }
 
-
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: #f9fafb;
   margin: 0;
   padding: 0;
@@ -41,7 +37,6 @@ code.inline-code {
   color: #d14;
 }
 
-
 @layer base {
   :root {
     --radius: 0.5rem;
@@ -49,19 +44,19 @@ code.inline-code {
 }
 
 .gradient-text {
-  background: linear-gradient(to right, #D46778 , #B26DA9, #5780EA, #8f40ff);
+  background: linear-gradient(to right, #d46778, #b26da9, #5780ea, #8f40ff);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }
 
 .glow-on-hover {
+  @apply py-2.5 lg:px-7 px-6;
   border: none;
   outline: none;
   color: #fff;
   background: #1f2937;
   cursor: pointer;
-  padding: 10px 30px;
   position: relative;
   z-index: 0;
   border-radius: 10px;

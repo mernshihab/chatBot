@@ -1,23 +1,55 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { TextGenerateEffect } from "../ui/text-generate-effect";
-import { IoSend } from "react-icons/io5";
-import { quantum } from "ldrs";
+import { IoSend, IoMic } from "react-icons/io5";
+import { quantum, mirage } from "ldrs";
 import Link from "next/link";
+
+// Default values shown
 
 export default function ChatComponent() {
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
 
   quantum.register();
+  mirage.register();
 
   const chatContainerRef = useRef(null);
+  const recognition = useRef(null);
+
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognition.current = new SpeechRecognition();
+      recognition.current.lang = "en-US";
+      recognition.current.continuous = true;
+      recognition.current.interimResults = true;
+
+      recognition.current.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.current.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.current.onresult = (event) => {
+        const transcript = event.results[event.resultIndex][0].transcript;
+        setMessage(transcript);
+      };
+    } else {
+      console.error("SpeechRecognition API is not supported in this browser.");
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!message) return;
     setLoading(true);
+    setIsListening(false);
 
     const currentMessage = message;
     const userMessage = { sender: "customer", message };
@@ -41,6 +73,16 @@ export default function ChatComponent() {
     setLoading(false);
   };
 
+  const toggleVoiceInput = () => {
+    if (recognition.current) {
+      if (isListening) {
+        recognition.current.stop();
+      } else {
+        recognition.current.start();
+      }
+    }
+  };
+
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
@@ -51,7 +93,7 @@ export default function ChatComponent() {
   return (
     <div className="container">
       <div
-        className="h-[70vh] w-[90%] absolute top-0 overflow-y-auto"
+        className="h-[75vh] w-[90%] absolute top-0 overflow-y-auto"
         ref={chatContainerRef}
         style={{
           msOverflowStyle: "none",
@@ -106,6 +148,18 @@ export default function ChatComponent() {
             ))}
           </div>
 
+          {isListening && (
+            <div
+              className={`fixed z-10 left-1/2 transform -translate-x-1/2 ${
+                chatHistory?.length > 0
+                  ? "bottom-28"
+                  : "bottom-28 lg:bottom-2/3"
+              }`}
+            >
+              <l-mirage size="120" speed="3.0" color="black"></l-mirage>
+            </div>
+          )}
+
           <div
             className={`fixed flex justify-center w-full transition-all ${
               chatHistory?.length > 0 ? "bottom-16" : "bottom-14 lg:bottom-1/2"
@@ -115,14 +169,24 @@ export default function ChatComponent() {
               onSubmit={handleSubmit}
               className="flex items-center space-x-2 transition-all"
             >
-              <input
-                type="text"
-                value={message}
-                disabled={loading}
-                onChange={(e) => setMessage(e.target.value)}
-                className="lg:w-[800px] w-[250px] p-3 border rounded-lg transition-all"
-                placeholder="Write message to ChatBot"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  value={message}
+                  disabled={loading}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="lg:w-[800px] w-[250px] p-3 border rounded-lg transition-all relative"
+                  placeholder="Write message to ChatBot"
+                />
+                <button
+                  type="button"
+                  onClick={toggleVoiceInput}
+                  className="ml-2 text-2xl absolute right-4 top-1/2 transform -translate-y-1/2"
+                >
+                  <IoMic color={isListening ? "red" : "black"} />
+                </button>
+              </div>
+
               <div>
                 {loading ? (
                   <l-quantum size="45" speed="1.75" color="black"></l-quantum>
@@ -133,7 +197,7 @@ export default function ChatComponent() {
                 )}
               </div>
             </form>
-            <div className="fixed bottom-4 flex justify-center">
+            <div className="fixed text-neutral-700 text-sm lg:text-base bottom-4 flex justify-center">
               <p>
                 Develop by{" "}
                 <Link
