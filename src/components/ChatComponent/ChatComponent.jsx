@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { TextGenerateEffect } from "../ui/text-generate-effect";
 import { IoSend } from "react-icons/io5";
 import { quantum } from "ldrs";
+import Link from "next/link";
 
 export default function ChatComponent() {
   const [message, setMessage] = useState("");
@@ -50,30 +51,56 @@ export default function ChatComponent() {
   return (
     <div className="container">
       <div
-        className="h-[70vh] absolute top-0 overflow-y-auto"
+        className="h-[70vh] w-[90%] absolute top-0 overflow-y-auto"
         ref={chatContainerRef}
+        style={{
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
+        }}
       >
         <div className="space-y-4">
           <div className="space-y-2">
             {chatHistory?.map((chat, index) => (
               <div
                 key={index}
-                className={`transition-all flex duration-500 ${
-                  chat?.sender === "customer" ? "justify-end" : "justify-start"
+                className={`transition-all duration-500 ${
+                  chat?.sender === "customer" ? "text-end" : "text-start"
                 }`}
               >
                 <div
                   className={`p-1.5 rounded-lg ${
                     chat?.sender === "customer"
                       ? ""
-                      : "bg-gray-300 w-[80%] text-xs font-medium"
+                      : "bg-gray-300 w-[80%] text-sm font-medium"
                   }`}
                 >
-                  <TextGenerateEffect
-                    words={chat.message}
-                    filter={chat.sender === "ai"}
-                    duration={1}
-                  />
+                  <div
+                    className={`flex space-x-2 ${
+                      chat?.sender === "customer"
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
+                  >
+                    {chat?.sender === "ai" && (
+                      <img
+                        src="https://png.pngtree.com/png-vector/20220611/ourmid/pngtree-chatbot-icon-chat-bot-robot-png-image_4841963.png"
+                        alt="Profile Icon"
+                        className="w-8 h-8 rounded-full"
+                      />
+                    )}
+                    <TextGenerateEffect
+                      words={chat.message}
+                      filter={chat.sender === "ai"}
+                      duration={1}
+                    />
+                    {chat?.sender === "customer" && (
+                      <img
+                        src="https://oldweb.brur.ac.bd/wp-content/uploads/2019/03/male.jpg"
+                        alt="Profile Icon"
+                        className="w-8 h-8 rounded-full"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -81,7 +108,7 @@ export default function ChatComponent() {
 
           <div
             className={`fixed flex justify-center w-full transition-all ${
-              chatHistory?.length > 0 ? "bottom-16" : "bottom-1/2"
+              chatHistory?.length > 0 ? "bottom-16" : "bottom-14 lg:bottom-1/2"
             }`}
           >
             <form
@@ -93,7 +120,7 @@ export default function ChatComponent() {
                 value={message}
                 disabled={loading}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-[800px] p-3 border rounded-lg transition-all"
+                className="lg:w-[800px] w-[250px] p-3 border rounded-lg transition-all"
                 placeholder="Write message to ChatBot"
               />
               <div>
@@ -101,11 +128,23 @@ export default function ChatComponent() {
                   <l-quantum size="45" speed="1.75" color="black"></l-quantum>
                 ) : (
                   <button type="submit" className="glow-on-hover">
-                    <IoSend size={22} />
+                    <IoSend size={20} />
                   </button>
                 )}
               </div>
             </form>
+            <div className="fixed bottom-4 flex justify-center">
+              <p>
+                Develop by{" "}
+                <Link
+                  className="underline"
+                  target="_blank"
+                  href="https://mernshihab.xyz"
+                >
+                  @Shihab
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

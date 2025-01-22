@@ -8,7 +8,6 @@ export async function POST(req) {
 
   try {
     const result = await model.generateContent(message);
-    console.log('Result:', result.response.text());
 
     return new Response(JSON.stringify({ response: result.response.text() }), { status: 200 });
   } catch (error) {
