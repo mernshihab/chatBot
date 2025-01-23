@@ -116,7 +116,7 @@ export default function Home() {
                 <div
                   className={`p-1.5 rounded-lg ${
                     chat?.sender === "ai" &&
-                    "bg-gray-200 w-[80%] text-sm font-medium"
+                    "bg-gray-200  md:w-[80%] text-sm font-medium"
                   }`}
                 >
                   <div
