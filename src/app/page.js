@@ -95,7 +95,7 @@ export default function Home() {
   }, [chatHistory]);
 
   return (
-    <div className="md:container px-2 md:px-0">
+    <div className="container px-2 md:px-0">
       <div
         className="h-[75vh] w-[90%] absolute top-2 lg:top-4 overflow-y-auto"
         ref={chatContainerRef}
