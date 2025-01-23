@@ -21,12 +21,12 @@ Before you start, ensure that you have the following installed:
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone <repository-url>
-   cd <project-folder>
+   git clone https://github.com/mernshihab/chatBot.git
+   cd chatBot
 
 2. Install the required dependencies:
 
-   npm install
+  ``` npm install
 
 3. Create a .env file in the root of the project directory and add your AI API key. The API key is required for the chatbot to function correctly.
 
@@ -34,5 +34,15 @@ Example: .env file
 
 AI_API_KEY=your-api-key-here
 
-Running the Application
+## Running the Application
 Once the dependencies are installed and the .env file is set up, you can run the app locally:
+
+1. Start the development server:
+  
+ ```npm run dev
+
+## Environment Variables
+  You will need to set the following environment variable in the .env file:
+
+AI_API_KEY: Your API key for the AI service. This is required for making requests to the backend AI service for generating responses.
+
