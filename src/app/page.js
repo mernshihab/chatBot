@@ -7,7 +7,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { TextGenerateEffect } from "@/Components/Ui/TextGenerateEffect";
 
-
 export default function Home() {
   const chatContainerRef = useRef(null);
   const recognition = useRef(null);
@@ -96,7 +95,7 @@ export default function Home() {
   }, [chatHistory]);
 
   return (
-    <div className="container">
+    <div className="md:container px-2 md:px-0">
       <div
         className="h-[75vh] w-[90%] absolute top-2 lg:top-4 overflow-y-auto"
         ref={chatContainerRef}
@@ -116,8 +115,8 @@ export default function Home() {
               >
                 <div
                   className={`p-1.5 rounded-lg ${
-                    chat?.sender === "ai"
-                      && "bg-gray-200 w-[80%] text-sm font-medium"
+                    chat?.sender === "ai" &&
+                    "bg-gray-200 w-[80%] text-sm font-medium"
                   }`}
                 >
                   <div
@@ -183,7 +182,7 @@ export default function Home() {
                   value={message}
                   disabled={loading}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="lg:w-[800px] w-[250px] p-3 border rounded-lg transition-all relative"
+                  className="lg:w-[800px] w-[280px] p-3 border rounded-lg transition-all relative"
                   placeholder="Write message to ChatBot"
                 />
                 <button
